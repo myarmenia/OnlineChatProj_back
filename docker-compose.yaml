@@ -1,0 +1,54 @@
+version: "3"
+services:
+  mysqldb:
+    image: mysql:8.0
+    command: --default-authentication-plugin=mysql_native_password
+    restart: unless-stopped
+    volumes:
+      - ./dbinit/init.sql:/docker-entrypoint-initdb.d/init.sql
+      - $HOME/database:/var/lib/mysql
+    ports:
+      - "3306:3306"
+    expose:
+      - "3306"
+    environment:
+      MYSQL_DATABASE: chatdb
+      MYSQL_PASSWORD: root
+      MYSQL_ROOT_PASSWORD: root
+      SERVICE_TAG: prod
+      SERVICE_NAME: mysqldb
+    networks:
+      - internalnet
+
+  chatapp:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    image: chat_app_back:v1
+    volumes:
+      # - $HOME/chatapp:/chatapp
+      - ./:/app
+      - "/app/node_modules"
+    ports:
+      - "4000:4000"
+    expose:
+      - "4000"
+    depends_on:
+      - mysqldb
+    environment:
+      DB_CONN_LIMIT: 10
+      DB_HOST: mysqldb
+      DB_PORT: 3306
+      DB_USER: "root"
+      DB_PASSWORD: "root"
+      DB_NAME: chat_db
+      SERVICE_TAG: prod
+      SERVICE_NAME: chatappservice
+      SERVICE_PORT: 4000
+      ACCESS_TOKEN: "7a5a61f94e5cee8bdd6e4d61ae4c2df45da9357ffaa900351aeae68be6d9234b1363921667584bfc1f4480cf650edcdba4406e8b1500750269695019635eaacb"
+    networks:
+      - internalnet
+
+networks:
+  internalnet:
+    driver: bridge
