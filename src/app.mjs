@@ -20,7 +20,7 @@ import corsOptions from "./config/corsOptions.mjs";
 // middlewares imports
 
 //routes imports
-
+import authRouter from "./router/authRouter.mjs";
 //routes imports
 
 // app
@@ -38,7 +38,7 @@ app.use(apiLogger);
 // configs
 
 // routes
-app.get("/", (req, res) => res.send("aaa"));
+app.use("/", authRouter);
 // routes
 
 // error handlers
