@@ -47,3 +47,29 @@ Kill container
 ```terminal
 docker rm container_name -f
 ```
+
+## Git
+
+Pull changes
+
+```terminal
+git pull
+```
+
+Add changes
+
+```terminal
+git add .
+```
+
+Commit changes
+
+```terminal
+git commit -m "what changes have been done"
+```
+
+Push changes
+
+```terminal
+git push
+```
