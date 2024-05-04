@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>OAuth Sign-In</title>
+</head>
+<body>
+  <h1>Sign In with OAuth</h1>
+  <button id="google-signin-client_id">Sign In with Google</button>
+  <button id="facebook-signin">Sign In with Facebook</button>
+  <script>
+    document.getElementById('google-signin-client_id').addEventListener('click', () => {
+      window.location.href = '/auth/google';
+    });
+
+    document.getElementById('facebook-signin').addEventListener('click', () => {
+      window.location.href = '/auth/facebook';
+    });
+  </script>
+</body>
+</html>

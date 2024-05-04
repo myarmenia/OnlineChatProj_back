@@ -8,9 +8,9 @@ services:
       - ./dbinit/init.sql:/docker-entrypoint-initdb.d/init.sql
       - $HOME/database:/var/lib/mysql
     ports:
-      - "3306:3306"
+      - "3307:3307"
     expose:
-      - "3306"
+      - "3307"
     environment:
       MYSQL_DATABASE: chatdb
       MYSQL_PASSWORD: root
@@ -36,6 +36,8 @@ services:
     depends_on:
       - mysqldb
     environment:
+      GOOGLE_CLIENT_ID: "367879367836-hfat57a781iee8is96nkvknrmi39ts8r.apps.googleusercontent.com"
+      GOOGLE_CLIENT_SECRET: "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"
       DB_CONN_LIMIT: 10
       DB_HOST: mysqldb
       DB_PORT: 3306

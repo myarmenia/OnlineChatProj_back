@@ -2,7 +2,13 @@
 import express from "express";
 import { configDotenv } from "dotenv";
 import cors from "cors";
+import ejs from "ejs"
 import cookieParser from "cookie-parser";
+import path from "node:path";
+
+import passport from "passport";
+
+import { fileURLToPath } from "node:url";
 // app imports
 
 // utils imports
@@ -16,7 +22,7 @@ import corsOptions from "./config/corsOptions.mjs";
 // configs imports
 
 // middlewares imports
-
+import  session  from "express-session";
 // middlewares imports
 
 //routes imports
@@ -36,10 +42,20 @@ app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(apiLogger);
 // configs
+//auth
+app.use(session({ secret: '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', resave: false, saveUninitialized: false }));
+app.use(passport.initialize());
+app.use(passport.session());
+//auth
+const __dirname = path.dirname(fileURLToPath(import.meta.url));
+app.set("view engine", "ejs");
+app.set("views", path.join(__dirname, "Views"));
+app.use(express.static(path.join(__dirname, "Public")));
 
-// routes
-app.use("/", authRouter);
-// routes
+
+
+app.use("/",authRouter)
+
 
 // error handlers
 app.use((err, req, res, next) => {
