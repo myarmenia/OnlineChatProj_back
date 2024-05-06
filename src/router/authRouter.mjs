@@ -2,7 +2,7 @@ import express, { Router } from "express";
 import authController from "../controller/authController.mjs";
 // import passport from "passport";
 // import  session  from "express-session";
-import { isLoggedIn } from "../middleware/Auth.mjs";
+import { authMiddle, isLoggedIn } from "../middleware/Auth.mjs";
 import {
   useDatabaseChat,
   createDatabase,
@@ -16,7 +16,7 @@ import passport from "passport";
 // import express from "express";
 
 import { Strategy as GoogleStrategy } from "passport-google-oauth20";
-import googleFunc from "../controller/__test__/authGoogle.mjs";
+import googleFunc from "../utils/socialAuth/authGoogle.mjs";
 import pool from "../db/mysql.config.mjs";
 // import facebookFunc from "../controller/__test__/authFacebook.mjs";
 
@@ -29,7 +29,7 @@ const user = await googleFunc();
 authRouter.get("/", authController.googleLogin);
 authRouter.get("/logout", authController.googleLogout);
 authRouter.get(
-  "/auth/google",
+  "/auth/google",authMiddle,
   passport.authenticate("google", { scope: ["email", "profile"] })
 );
 authRouter.get(
@@ -41,7 +41,7 @@ authRouter.get(
 );
 
 authRouter.get("/auth/failure", authController.authFailure);
-authRouter.get("/protected", isLoggedIn, async (req, res) => {
+authRouter.get("/protected",isLoggedIn,  async (req, res) => {
   // await createDatabase()
   // await useDatabaseChat()
   // await createTableUsers()
