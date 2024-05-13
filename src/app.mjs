@@ -54,7 +54,7 @@ app.use(express.static(path.join(__dirname, "Public")));
 
 
 
-app.use("/",authRouter)
+app.use("/api/",authRouter)
 
 
 // error handlers

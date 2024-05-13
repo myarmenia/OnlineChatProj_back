@@ -13,60 +13,73 @@ import {
 //auth
 
 import passport from "passport";
+// import passportf from "passport-facebook";
 // import express from "express";
 
 import { Strategy as GoogleStrategy } from "passport-google-oauth20";
 import googleFunc from "../utils/socialAuth/authGoogle.mjs";
 import pool from "../db/mysql.config.mjs";
+import facebookFunc from "../utils/socialAuth/authFacebook.mjs";
 // import facebookFunc from "../controller/__test__/authFacebook.mjs";
 
 const app = express();
 const authRouter = Router();
 
-// const userFacebook = await facebookFunc();
+const userFacebook = await facebookFunc();
 const user = await googleFunc();
 
 authRouter.get("/", authController.googleLogin);
 authRouter.get("/logout", authController.googleLogout);
 authRouter.get(
-  "/auth/google",authMiddle,
+  "/auth/google",
   passport.authenticate("google", { scope: ["email", "profile"] })
 );
 authRouter.get(
   "/google/callback",
   passport.authenticate("google", {
-    successRedirect: "/protected",
-    failureRedirect: "/auth/failure",
+    successRedirect: "api/protected",
+    failureRedirect: "api/auth/failure",
   })
 );
 
 authRouter.get("/auth/failure", authController.authFailure);
-authRouter.get("/protected",isLoggedIn,  async (req, res) => {
+
+//auth facebook
+authRouter.get(
+  "/auth/facebook",
+  passport.authenticate("facebook", { scope: ["email", "profile"] })
+);
+
+authRouter.get(
+  "/auth/facebook/callback",
+  passport.authenticate("facebook", {
+    successRedirect: "api/protected",
+    failureRedirect: "api/auth/failure",
+  }),
+  function (req, res) {
+    // Successful authentication, redirect home.
+    res.redirect("/api");
+  }
+);
+authRouter.get("/protected", isLoggedIn, async (req, res) => {
   // await createDatabase()
-  // await useDatabaseChat()
+  await useDatabaseChat()
   // await createTableUsers()
   // await addTableUsers(user.email,user.name)
+  //  console.log(user);
+  
   const userData = [user.name, user.email];
   const insertUserSql = `INSERT INTO users (name, email) VALUES ("${user.name}","${user.email}")`;
   pool.query(insertUserSql, (error, results, fields) => {
     if (error) throw error;
     console.log("Data inserted into users table successfully");
   });
-  res.send(user);
+  const url = "http://localhost:4000";
+  res.cookie('email',user.email)
+  res.cookie('accessToken',user.accessToken)
+  res.cookie('userName',user.name)
+  res.redirect(301, url);
 });
-
-
-
-//auth facebook
-// app.get('/auth/facebook',
-// passportf.authenticate('facebook',{ scope: ["email", "profile"] }));
-
-// app.get('/auth/facebook/callback',
-// passportf.authenticate('facebook', { successRedirect: "/protected",failureRedirect: '/auth/failure' }),
-//   function(req, res) {
-//     // Successful authentication, redirect home.
-//     res.redirect('/');
-//   });
 
 //auth facebook
 

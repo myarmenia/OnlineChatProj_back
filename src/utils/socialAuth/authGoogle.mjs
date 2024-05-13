@@ -1,18 +1,19 @@
 import passport from "passport";
 import { Strategy as GoogleStrategy } from 'passport-google-oauth20';
+import { addTableUsers, createTableUsers, useDatabaseChat } from "../../db/dbController.mjs";
 
 
 
 
-const googleFunc=async ()=>{
+const googleFunc=async (req,res)=>{
 const user={}
-
+console.log("bbbbbb");
 
  passport.use(new GoogleStrategy({
     clientID:     process.env.GOOGLE_CLIENT_ID,
     clientSecret: process.env.GOOGLE_CLIENT_SECRET,
     callbackURL: "http://localhost:3000",
-    // accessType: 'offline',
+    accessType: 'offline',
     passReqToCallback   : true
   },
   function(request, accessToken, refreshToken, profile, done) {
@@ -36,7 +37,7 @@ passport.deserializeUser(async (id, done)=> {
     console.log("opshi user",id.emails[0].value);
       done(null, id);
   });
-return user
+
 }
 
 export default googleFunc

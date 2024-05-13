@@ -4,9 +4,9 @@ import authService from "../service/authService.mjs";
 const authController = {
   googleLogin: async (req, res) => {
     try {
-      const authUser =await authService.googleLogin();
-
-    return res.render(authUser)
+      // const authUser =await authService.googleLogin();
+      const url="http://localhost:3000"
+    return res.redirect(301,url)
     } catch (error) {
       console.error(error)
     }
@@ -15,7 +15,7 @@ const authController = {
     try {
       req.logout(function(err) {
             if (err) { return next(err); }
-            res.redirect("/");
+            res.redirect("/api");
           });
     } catch (error) {
       console.error(error)
