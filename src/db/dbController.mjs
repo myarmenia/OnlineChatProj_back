@@ -1,48 +1,48 @@
 import pool from "./mysql.config.mjs";
 
-
-export const createDatabase=async ()=>{
+export const createDatabase = async () => {
   try {
-    const result =await pool.query(`CREATE DATABASE chat;`)
+    const result = await pool.query(`CREATE DATABASE chat;`);
   } catch (error) {
-    console.error(error)
-  }
-}
-
-export const useDatabaseChat=async ()=>{
-  try {
-    const result = await pool.query(`USE chat;`)
-  } catch (error) {
-    console.error(error)
-  }
-}
-
-export const createTableUsers = async (name, columns) => {
-  try {
-    const result=await pool.query(`CREATE TABLE users(
-      id BIGINT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
-      email VARCHAR(1000) NULL,
-      user_name VARCHAR(1000) NULL
-    );`)
-  } catch (error) {
-    console.error(error)
+    console.error(error);
   }
 };
 
-
-export const addTableUsers=async (email,user_name)=>{
+export const useDatabaseChat = async () => {
   try {
-    const result = await pool.query(`INSERT INTO users(name,email) VALUES("${user_name}","${email}");`)
+    const result = await pool.query(`USE chat;`);
   } catch (error) {
-    console.error(error)
+    console.error(error);
   }
-}
+};
 
-export const getTableUsers=async ()=>{
+export const createTableUsers = async (name, columns) => {
   try {
-    const result = await pool.query(`SELECT * FROM users;`)
-    return result
+    const result = await pool.query(`CREATE TABLE users(
+      id BIGINT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
+      email VARCHAR(1000) NULL,
+      user_name VARCHAR(1000) NULL
+    );`);
   } catch (error) {
-    console.error(error)
+    console.error(error);
   }
-}
+};
+
+export const addTableUsers = async (email, user_name) => {
+  try {
+    const result = await pool.query(
+      `INSERT INTO users(name,email) VALUES("${user_name}","${email}");`
+    );
+  } catch (error) {
+    console.error(error);
+  }
+};
+
+export const getTableUsers = async () => {
+  try {
+    const result = await pool.query(`SELECT * FROM users;`);
+    return result;
+  } catch (error) {
+    console.error(error);
+  }
+};

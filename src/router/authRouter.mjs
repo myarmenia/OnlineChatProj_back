@@ -63,11 +63,11 @@ authRouter.get(
 );
 authRouter.get("/protected", isLoggedIn, async (req, res) => {
   // await createDatabase()
-  await useDatabaseChat()
+  await useDatabaseChat();
   // await createTableUsers()
   // await addTableUsers(user.email,user.name)
   //  console.log(user);
-  
+
   const userData = [user.name, user.email];
   const insertUserSql = `INSERT INTO users (name, email) VALUES ("${user.name}","${user.email}")`;
   pool.query(insertUserSql, (error, results, fields) => {
@@ -75,9 +75,9 @@ authRouter.get("/protected", isLoggedIn, async (req, res) => {
     console.log("Data inserted into users table successfully");
   });
   const url = "http://localhost:4000";
-  res.cookie('email',user.email)
-  res.cookie('accessToken',user.accessToken)
-  res.cookie('userName',user.name)
+  res.cookie("email", user.email);
+  res.cookie("accessToken", user.accessToken);
+  res.cookie("userName", user.name);
   res.redirect(301, url);
 });
 

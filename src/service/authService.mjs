@@ -1,22 +1,18 @@
-
-
-
-
 const authService = {
-  authFailure: async ()=>{
+  authFailure: async () => {
     try {
-      return "something went wrong..."
+      return "something went wrong...";
     } catch (error) {
-      console.error(error)
+      console.error(error);
     }
   },
-  protected:async ()=>{
+  protected: async () => {
     try {
-      return 
+      return;
     } catch (error) {
-      console.error(error)
+      console.error(error);
     }
-  }
+  },
 };
 
 export default authService;

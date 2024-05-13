@@ -14,14 +14,13 @@ const facebookFunc = async () => {
         passReqToCallback: true,
       },
       function (accessToken, refreshToken, profile, cb) {
-        //   User.findOrCreate({ facebookId: profile.id }, function (err, user) {
+        
         return cb(err, user);
-        //   });
+       
       }
     )
   );
   passport.serializeUser(function (user, done) {
-    // console.log("users verjin",user.emails[0].value);
     done(null, user);
   });
 
