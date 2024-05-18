@@ -3,7 +3,7 @@ import authService from "../service/authService.mjs";
 const authController = {
   googleLogin: async (req, res) => {
     try {
-      const url = "http://localhost:3000";
+      const url = "https://chat.trigger.ltd/";
       return res.redirect(301, url);
     } catch (error) {
       console.error(error);
