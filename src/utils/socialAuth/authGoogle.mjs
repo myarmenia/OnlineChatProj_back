@@ -11,12 +11,12 @@ const googleFunc = async (req, res) => {
       {
         clientID: process.env.GOOGLE_CLIENT_ID,
         clientSecret: process.env.GOOGLE_CLIENT_SECRET,
-        callbackURL: "http://195.181.242.194/api/google/callback",
+        callbackURL: "http://chat.trigger.ltd:4001/api/google/callback",
         accessType: "offline",
         passReqToCallback: true,
       },
       function (request, accessToken, refreshToken, profile, done) {
-       
+
         console.log("profile", profile);
         console.log("accesToken", accessToken);
         user.email = profile.emails[0].value;
@@ -32,7 +32,7 @@ const googleFunc = async (req, res) => {
         res.cookie("accessToken", user.accessToken);
         res.cookie("userName", user.name);
         return done(null, profile);
-    
+
       }
     )
   );

@@ -32,7 +32,7 @@ authRouter.get(
 );
 authRouter.get(
   "/google/callback",
-  passport.authenticate("",{
+  passport.authenticate("api",{
     successRedirect: "/protected",
     failureRedirect: "api/auth/failure",
   })
