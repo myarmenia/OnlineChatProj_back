@@ -7,7 +7,7 @@ const facebookFunc = async () => {
       {
         clientID: process.env.FACEBOOK_APP_ID,
         clientSecret: process.env.FACEBOOK_APP_SECRET,
-        callbackURL: "https://chat.trigger.ltd/",
+        callbackURL: "https://chat.trigger.ltd/test",
         accessType: "offline",
         passReqToCallback: true,
       },
