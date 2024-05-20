@@ -53,8 +53,9 @@ authRouter.get(
     failureRedirect: "api/auth/failure",
   }),
   function (req, res) {
+    const url = "https://chat.trigger.ltd/"
     // Successful authentication, redirect home.
-    res.redirect("/api");
+    res.redirect(301,url);
   }
 );
 authRouter.get("/protected", isLoggedIn, async (req, res) => {
@@ -74,7 +75,7 @@ authRouter.get("/protected", isLoggedIn, async (req, res) => {
   res.cookie("email", user.email);
   res.cookie("accessToken", user.accessToken);
   res.cookie("userName", user.name);
-  res.send("hello");
+  res.redirect(301,url);
 });
 
 //auth facebook
