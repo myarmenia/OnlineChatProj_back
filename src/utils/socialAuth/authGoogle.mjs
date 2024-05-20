@@ -1,5 +1,6 @@
 import passport from "passport";
 import { Strategy as GoogleStrategy } from "passport-google-oauth20";
+import pool from "../../db/mysql.config.mjs";
 
 
 const googleFunc = async (req, res) => {
@@ -21,6 +22,15 @@ const googleFunc = async (req, res) => {
         user.email = profile.emails[0].value;
         user.accessToken = accessToken;
         user.name = profile.displayName;
+        const userData = [user.name, user.email];
+        const insertUserSql = `INSERT INTO users (name, email) VALUES ("${user.name}","${user.email}")`;
+        pool.query(insertUserSql, (error, results, fields) => {
+          if (error) throw error;
+          console.log("Data inserted into users table successfully");
+        });
+        res.cookie("email", user.email);
+        res.cookie("accessToken", user.accessToken);
+        res.cookie("userName", user.name);
         return done(null, profile);
     
       }

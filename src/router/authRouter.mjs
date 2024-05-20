@@ -32,8 +32,8 @@ authRouter.get(
 );
 authRouter.get(
   "/google/callback",
-  passport.authenticate("google", {
-    successRedirect: "api/protected",
+  passport.authenticate("",{
+    successRedirect: "/protected",
     failureRedirect: "api/auth/failure",
   })
 );
