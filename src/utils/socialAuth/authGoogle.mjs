@@ -10,7 +10,7 @@ const googleFunc = async (req, res) => {
       {
         clientID: process.env.GOOGLE_CLIENT_ID,
         clientSecret: process.env.GOOGLE_CLIENT_SECRET,
-        callbackURL: "https://chat.trigger.ltd/",
+        callbackURL: "http://195.181.242.194/api/google/callback",
         accessType: "offline",
         passReqToCallback: true,
       },

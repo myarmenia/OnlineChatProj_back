@@ -74,7 +74,7 @@ authRouter.get("/protected", isLoggedIn, async (req, res) => {
   res.cookie("email", user.email);
   res.cookie("accessToken", user.accessToken);
   res.cookie("userName", user.name);
-  res.redirect(301, url);
+  res.send("hello");
 });
 
 //auth facebook
