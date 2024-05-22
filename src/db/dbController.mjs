@@ -1,4 +1,6 @@
-import pool from "./mysql.config.mjs";
+import connection from "./mysql.config.mjs";
+
+const pool = await connection()
 
 export const createDatabase = async () => {
   try {
@@ -30,9 +32,10 @@ export const createTableUsers = async (name, columns) => {
 
 export const addTableUsers = async (email, user_name) => {
   try {
-    console.log("add user");
+    console.log("add user",user_name);
+    console.log("add email",email);
     const result = await pool.query(
-      `INSERT INTO users(name,email) VALUES("${user_name}","${email}");`
+      `INSERT INTO users(email,user_name) VALUES("${email}","${user_name}");`
     );
   } catch (error) {
     console.error(error);
