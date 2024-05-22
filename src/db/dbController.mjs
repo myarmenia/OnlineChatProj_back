@@ -30,6 +30,7 @@ export const createTableUsers = async (name, columns) => {
 
 export const addTableUsers = async (email, user_name) => {
   try {
+    console.log("add user");
     const result = await pool.query(
       `INSERT INTO users(name,email) VALUES("${user_name}","${email}");`
     );
