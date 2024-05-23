@@ -44,7 +44,7 @@ const googleUser={}
 passport.use(new GoogleStrategy({
   clientID: "367879367836-hfat57a781iee8is96nkvknrmi39ts8r.apps.googleusercontent.com",
   clientSecret: "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",
-  callbackURL: 'http://localhost:4001/auth/google/callback'
+  callbackURL: 'http://chat.trigger.ltd:4001/auth/google/callback'
 }, (accessToken, refreshToken, profile, done) => {
   googleUser.accessToken=accessToken
 
@@ -69,7 +69,7 @@ passport.use(
         {
           clientID: "1374054513291709",
           clientSecret: "737f92274f4cb84f6160752902e4f0c7",
-          callbackURL: "http://localhost:4001/auth/facebook/callback",
+          callbackURL: "http://chat.trigger.ltd:4001/auth/facebook/callback",
           accessType: "offline",
           passReqToCallback: true,
         },
@@ -96,7 +96,7 @@ passport.use(
 
 // Routes
 app.get('/', (req, res) => {
-  const url ="http://localhost:3000"
+  const url ="https://chat.trigger.ltd"
   res.redirect(301,url);
 });
 
@@ -156,6 +156,7 @@ async (req, res) => {
     })
     if(!findUser){
       await addTableUsers(googleUser.emails[0].value,userName)
+      console.log("values send database");
     }
     req.session.cookie=googleUser.name
     // Set cookies
@@ -177,12 +178,11 @@ async (req, res) => {
 
 app.get('/profile', (req, res) => {
   if (!req.isAuthenticated()) {
-    const url ="http://localhost:3000"
+    const url ="https://chat.trigger.ltd"
     return res.redirect(301,url);
   }
   
-  const url = `http://localhost:3000/user/${req.user.displayName}`
-  // const url = 'https://chat.trigger.ltd'
+  const url = `https://chat.trigger.ltd/user/${req.user.displayName}`
   res.redirect(301,url)
   
 });
