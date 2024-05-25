@@ -44,7 +44,7 @@ const googleUser={}
 passport.use(new GoogleStrategy({
   clientID: "367879367836-hfat57a781iee8is96nkvknrmi39ts8r.apps.googleusercontent.com",
   clientSecret: "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",
-  callbackURL: 'http://chat.trigger.ltd:4001/auth/google/callback'
+  callbackURL: 'http://localhost:4001/auth/google/callback'
 }, (accessToken, refreshToken, profile, done) => {
   googleUser.accessToken=accessToken
 
@@ -96,7 +96,7 @@ passport.use(
 
 // Routes
 app.get('/', (req, res) => {
-  const url ="https://chat.trigger.ltd"
+  const url ="http://localhost:3000"
   res.redirect(301,url);
 });
 
@@ -111,8 +111,7 @@ app.get('/auth/google/callback',
   passport.authenticate('google', { failureRedirect: '/' }),
   async (req, res) => {
     if (req.user) {
-      // Assuming googleUser is the authenticated user object
-      // const googleUser = req.user;
+
       console.log("req all",req.user);
       await useDatabaseChat()
       const usersDb=await getTableUsers()
@@ -125,13 +124,13 @@ app.get('/auth/google/callback',
       googleUser.name=req.user.displayName
       googleUser.email=req.user._json.email
       // Set cookies
-      res.cookie('name', req.user.displayName, { httpOnly: false,});
-      res.cookie('email', req.user._json.email, { httpOnly: false, });
+      res.cookie('name', googleUser.name, { httpOnly: false,});
+      res.cookie('email', googleUser.email, { httpOnly: false, });
       res.cookie('accessToken', googleUser.accessToken, { httpOnly:false,});
 
 
       // Redirect to the desired URL
-      ;
+
       res.redirect('/profile')
     } else {
       res.redirect('/');
@@ -143,11 +142,7 @@ app.get('/auth/facebook/callback',
 passport.authenticate('facebook', { failureRedirect: '/' }),
 async (req, res) => {
   if (req.user) {
-    // Assuming googleUser is the authenticated user object
-    // const googleUser = req.user;
-    // req.session.name = googleUser.name;
-    // req.session.email = googleUser.email;
-    // req.session.accessToken = googleUser.accessToken;
+    
     await useDatabaseChat()
     const userName=googleUser.name.givenName+" "+googleUser.name.familyName
     const usersDb=await getTableUsers()
@@ -158,15 +153,16 @@ async (req, res) => {
       await addTableUsers(googleUser.emails[0].value,userName)
       console.log("values send database");
     }
-    req.session.cookie=googleUser.name
+    googleUser.name=req.user.displayName
+    googleUser.email=req.user._json.email
     // Set cookies
-    res.cookie('name', googleUser.name, {httpOnly:false,secure:false,});
-    res.cookie('email', googleUser.email, { httpOnly:false,secure:false,});
-    res.cookie('accessToken', googleUser.accessToken, { httpOnly:false,secure:false,});
+    res.cookie('name', googleUser.name, { httpOnly: false,});
+    res.cookie('email', googleUser.email, { httpOnly: false, });
+    res.cookie('accessToken', googleUser.accessToken, { httpOnly:false,});
 
 
     // Redirect to the desired URL
-    ;
+    
     res.redirect('/profile')
   } else {
     res.redirect('/');
@@ -178,11 +174,12 @@ async (req, res) => {
 
 app.get('/profile', (req, res) => {
   if (!req.isAuthenticated()) {
-    const url ="https://chat.trigger.ltd"
+   
+    const url =`http://localhost:3000/user/${googleUser.name}`
     return res.redirect(301,url);
   }
   
-  const url = `https://chat.trigger.ltd/user/${req.user.displayName}`
+  const url = `http://localhost:3000`
   res.redirect(301,url)
   
 });
@@ -190,6 +187,9 @@ app.get('/profile', (req, res) => {
 app.get('/logout', (req, res) => {
   req.logout(err => {
     if (err) { return next(err); }
+    res.cookie('name', '', { expires: new Date(0) });
+    res.cookie('email', '', { expires: new Date(0) });
+    res.cookie('accessToken', '', { expires: new Date(0) });
     res.redirect('/');
   });
 });
