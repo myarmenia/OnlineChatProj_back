@@ -69,7 +69,7 @@ passport.use(
         {
           clientID: "1374054513291709",
           clientSecret: "737f92274f4cb84f6160752902e4f0c7",
-          callbackURL: "http://chat.trigger.ltd:4001/auth/facebook/callback",
+          callbackURL: "http://localhost:4001/auth/facebook/callback",
           accessType: "offline",
           passReqToCallback: true,
         },
